@@ -12,6 +12,7 @@ import { Link, useParams } from "react-router-dom";
 import {
   paginatedIndexesConfig,
   useAccount,
+  useBalance,
   useContractInfiniteReads,
   useContractRead,
   useContractWrite,
@@ -24,6 +25,7 @@ import { ItemMain } from "../components";
 
 export default function Game() {
   const { address } = useAccount();
+  const { data: balance } = useBalance({ address });
 
   let { gameAddress, id } = useParams();
 
@@ -84,7 +86,9 @@ export default function Game() {
                   >
                     <td>{id_.toString()}</td>
                     <td>{user_}</td>
-                    <td>{ethers.utils.formatEther(amount_)} ETH</td>
+                    <td>
+                      {ethers.utils.formatEther(amount_)} {balance?.symbol}
+                    </td>
                     <td>
                       <Button
                         variant="light"

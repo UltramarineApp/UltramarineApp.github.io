@@ -170,8 +170,6 @@ export function ItemMain({
     }
   }, [liquidity_]);
 
-  const numberOfGames = ethers.utils.formatEther(numberOfGames_);
-
   const [l, setL] = useState(balance?.formatted);
 
   const { config }: any = usePrepareContractWrite({
@@ -483,7 +481,8 @@ export function ItemMain({
               borderRadius: "0 0 10px 0",
             }}
           >
-            Withdraw {ethers.utils.formatEther(balance_)} ETH{" "}
+            Withdraw {ethers.utils.formatEther(balance_)}{" "}
+            {balance && balance.symbol}{" "}
           </Button>
         </Box>
       )}
@@ -561,7 +560,7 @@ export function ItemMain({
           defaultValue={max / 2}
           min={min}
           max={max}
-          label={(value) => `${value.toFixed(5)} ETH`}
+          label={(value) => `${value.toFixed(5)} ${balance?.symbol}`}
           step={min / 10}
           thumbChildren={<IconCircle size={20} />}
           thumbSize={26}
@@ -625,7 +624,7 @@ export function ItemMain({
         fullWidth
         onClick={() => writePlay && writePlay()}
       >
-        BET {amount ? amount.toFixed(5) + " ETH" : ""}
+        BET {amount ? amount.toFixed(5) + " " + balance?.symbol : ""}
       </Button>
     </Card>
   );
