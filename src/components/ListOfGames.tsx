@@ -45,6 +45,7 @@ import {
   useAccount,
   useBalance,
   useContractWrite,
+  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
@@ -89,7 +90,7 @@ const liq: any = {
   zIndex: "1",
 };
 
-import ultramarineABI from "../../abi/ultramarine.json";
+import { ultramarineABI } from "../../abi";
 
 const customLoader = (
   <svg
@@ -136,6 +137,7 @@ export function ItemMain({
 
   const { address } = useAccount();
   const { data: balance } = useBalance({ address });
+  const { chain } = useNetwork();
 
   let [
     game_,
@@ -215,13 +217,13 @@ export function ItemMain({
     isLoading: isLoading2Play,
   } = useWaitForTransaction({ hash: play?.hash });
 
-  console.log("dataPlay", dataPlay);
-
   useEffect(() => {
     if (!isLoading2Play && dataPlay) {
       const id = ethers.utils.defaultAbiCoder.decode(
         ["uint256"],
-        dataPlay?.logs?.[1]?.topics?.[3]
+        chain?.id && chain?.id === 314_1
+          ? dataPlay?.logs?.[1]?.topics?.[2]
+          : dataPlay?.logs?.[1]?.topics?.[3]
       )[0];
       navigate(`/games/${gameAddress}/${id}`);
       window.location.reload();

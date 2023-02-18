@@ -4,7 +4,10 @@ import {
   paginatedIndexesConfig,
   useAccount,
   useContractInfiniteReads,
+  useNetwork,
 } from "wagmi";
+
+import { factoryAddress } from "../../abi";
 
 import factoryABI from "../../abi/factory.json";
 
@@ -13,8 +16,13 @@ import { Items } from "../components";
 export default function Games() {
   const { address } = useAccount();
 
+  const { chain } = useNetwork();
+
   const contractConfig: any = {
-    address: "0x36c4E4f98D82944515D87b0aad0CD263588039d8",
+    address:
+      chain?.id && (chain?.id === 80_001 || chain?.id === 314_1)
+        ? factoryAddress[chain.id]
+        : ethers.constants.AddressZero,
     abi: factoryABI,
   };
 

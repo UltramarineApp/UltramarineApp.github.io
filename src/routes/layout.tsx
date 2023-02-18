@@ -109,11 +109,12 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
   useAccount,
   useContractWrite,
+  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
 
-import factoryABI from "../../abi/factory.json";
+import { factoryAddress, factoryABI } from "../../abi";
 import { ethers } from "ethers";
 
 const customLoader = (
@@ -155,10 +156,13 @@ export default function Layout() {
 
   const { classes, cx } = useStyles();
 
-  const { isConnected } = useAccount();
+  const { chain } = useNetwork();
 
   const contractConfig: any = {
-    address: "0x36c4E4f98D82944515D87b0aad0CD263588039d8",
+    address:
+      chain?.id && (chain?.id === 80_001 || chain?.id === 314_1)
+        ? factoryAddress[chain.id]
+        : ethers.constants.AddressZero,
     abi: factoryABI,
   };
 
