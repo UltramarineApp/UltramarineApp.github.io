@@ -27,9 +27,11 @@ import {
   IconAddressBook,
   IconAlertCircle,
   IconCheck,
+  IconCircle,
   IconCoin,
   IconCurrencyEthereum,
   IconDice,
+  IconDropletFilled2,
   IconPlus,
   IconSeeding,
   IconSettings,
@@ -50,7 +52,6 @@ import {
 const vs: any = {
   position: "absolute",
   fontSize: "50px",
-  fontFamily: "cursive",
   top: "65px",
   left: "0",
   right: "0",
@@ -61,7 +62,30 @@ const vs: any = {
   color: "transparent",
   WebkitBackgroundClip: "text",
   WebkitTextStroke: "2px transparent",
-  width: "60px",
+  width: "70px",
+  zIndex: "1",
+  opacity: ".5",
+};
+
+const bal: any = {
+  position: "absolute",
+  fontSize: "10px",
+  top: "2px",
+  left: "0px",
+  marginLeft: "auto",
+  marginRight: "auto",
+  background: "",
+  zIndex: "1",
+};
+
+const liq: any = {
+  position: "absolute",
+  fontSize: "10px",
+  top: "2px",
+  right: "0px",
+  marginLeft: "auto",
+  marginRight: "auto",
+  background: "",
   zIndex: "1",
 };
 
@@ -113,7 +137,7 @@ export function ItemMain({
   const { address } = useAccount();
   const { data: balance } = useBalance({ address });
 
-  const [
+  let [
     game_,
     name_,
     owner_,
@@ -168,7 +192,7 @@ export function ItemMain({
 
   useEffect(() => {
     if (!isLoading && res && l) {
-      setLiquidity(parseFloat(l));
+      window.location.reload();
     }
   }, [isLoading]);
 
@@ -191,17 +215,18 @@ export function ItemMain({
     isLoading: isLoading2Play,
   } = useWaitForTransaction({ hash: play?.hash });
 
+  console.log("dataPlay", dataPlay);
+
   useEffect(() => {
     if (!isLoading2Play && dataPlay) {
       const id = ethers.utils.defaultAbiCoder.decode(
         ["uint256"],
-        dataPlay?.logs?.[0]?.topics?.[3]
+        dataPlay?.logs?.[1]?.topics?.[3]
       )[0];
       navigate(`/games/${gameAddress}/${id}`);
+      window.location.reload();
     }
   }, [isLoading2Play]);
-
-  console.log("dataPlay", dataPlay);
 
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
@@ -256,6 +281,12 @@ export function ItemMain({
     isError: isErrorWithdraw,
     isLoading: isLoading2Withdraw,
   } = useWaitForTransaction({ hash: withdraw?.hash });
+
+  useEffect(() => {
+    if (!isLoading2Withdraw && dataWithdraw) {
+      balance_ = 0;
+    }
+  }, [isLoading2Withdraw]);
 
   return (
     <Card shadow="sm" p="lg" radius="md" withBorder>
@@ -443,31 +474,40 @@ export function ItemMain({
             leftIcon={<IconWallet />}
             size="xs"
             variant="light"
-            style={{ border: 0, paddingRight: 8, paddingLeft: 8 }}
+            style={{
+              border: 0,
+              paddingRight: 8,
+              paddingLeft: 8,
+              borderRadius: "0 0 10px 0",
+            }}
           >
             Withdraw {ethers.utils.formatEther(balance_)} ETH{" "}
           </Button>
         </Box>
       )}
-      <Box
-        style={{
-          position: "absolute",
-          zIndex: "1",
-          right: "0",
-          top: "0",
-          margin: "0",
-          padding: "0",
-        }}
-      >
-        <Button
-          onClick={() => setOpened(true)}
-          size="sm"
-          variant="default"
-          style={{ border: 0, paddingRight: 8, paddingLeft: 8 }}
+      {owner_ && address && owner_ === address ? (
+        <Box
+          style={{
+            position: "absolute",
+            zIndex: "1",
+            right: "0",
+            top: "0",
+            margin: "0",
+            padding: "0",
+          }}
         >
-          <IconSettings />
-        </Button>
-      </Box>
+          <Button
+            onClick={() => setOpened(true)}
+            size="sm"
+            variant="default"
+            style={{ border: 0, paddingRight: 8, paddingLeft: 8 }}
+          >
+            <IconSettings />
+          </Button>
+        </Box>
+      ) : (
+        ""
+      )}
       {liquidity <= 0 ? (
         <Notification
           title="The game requires adding liquidity."
@@ -521,9 +561,9 @@ export function ItemMain({
           max={max}
           label={(value) => `${value.toFixed(5)} ETH`}
           step={min / 10}
-          thumbChildren={<IconCoin size={26} />}
-          thumbSize={36}
-          styles={{ thumb: { borderWidth: 3, padding: 3 } }}
+          thumbChildren={<IconCircle size={20} />}
+          thumbSize={26}
+          styles={{ thumb: { borderWidth: 1, padding: 1 } }}
           style={{ marginTop: 40, marginLeft: 20, marginRight: 20 }}
           color="cyan"
         />
@@ -541,11 +581,12 @@ export function ItemMain({
         <Center
           style={{
             height: 200,
-            background: `#${background1_}`,
+            backgroundColor: `#${background1_}`,
             fontSize: "100px",
             cursor: "pointer",
             opacity: btn1,
           }}
+          className="box"
           onClick={(e) => {
             setBtn1("1");
             setBtn2(".2");
@@ -557,11 +598,12 @@ export function ItemMain({
         <Center
           style={{
             height: 200,
-            background: `#${background2_}`,
+            backgroundColor: `#${background2_}`,
             fontSize: "100px",
             cursor: "pointer",
             opacity: btn2,
           }}
+          className="box"
           onClick={(e) => {
             setBtn1(".2");
             setBtn2("1");
@@ -577,11 +619,11 @@ export function ItemMain({
       <Button
         disabled={!writePlay}
         size="xl"
-        color="cyan"
+        variant="gradient"
         fullWidth
         onClick={() => writePlay && writePlay()}
       >
-        BET
+        BET {amount ? amount.toFixed(5) + " ETH" : ""}
       </Button>
     </Card>
   );
@@ -599,7 +641,7 @@ export function ItemPreview({ game }: { game: any }) {
       <Center
         style={{
           height: 200,
-          background: `#${game.background1}`,
+          backgroundColor: `#${game.background1}`,
           fontSize: "100px",
         }}
       >
@@ -608,7 +650,7 @@ export function ItemPreview({ game }: { game: any }) {
       <Center
         style={{
           height: 200,
-          background: `#${game.background2}`,
+          backgroundColor: `#${game.background2}`,
           fontSize: "100px",
         }}
       >
@@ -619,8 +661,24 @@ export function ItemPreview({ game }: { game: any }) {
 }
 
 export function Item({ game }: { game: any }) {
+  const { address } = useAccount();
+  const { data: balance } = useBalance({ address });
+
   return (
-    <Card shadow="sm" p="lg" radius="md" withBorder>
+    <Card shadow="sm" p={0} radius="md">
+      <Group position="apart" m="xs">
+        <div style={bal}>
+          <Badge color="gray" variant="light" size="xs">
+            Bal: {ethers.utils.formatEther(game[3])} {balance?.symbol}
+          </Badge>
+        </div>
+        <div style={liq}>
+          <Badge color="gray" variant="light" size="xs">
+            Liq: {ethers.utils.formatEther(game[4])} {balance?.symbol}
+          </Badge>
+        </div>
+      </Group>
+
       <SimpleGrid
         cols={2}
         spacing="xs"
@@ -631,44 +689,31 @@ export function Item({ game }: { game: any }) {
         <Center
           style={{
             height: 200,
-            background: `#${game[6]}`,
+            backgroundColor: `#${game[6]}`,
             fontSize: "100px",
           }}
+          className="box"
         >
           {game[7]}
         </Center>
         <Center
           style={{
             height: 200,
-            background: `#${game[8]}`,
+            backgroundColor: `#${game[8]}`,
             fontSize: "100px",
           }}
+          className="box"
         >
           {game[9]}
         </Center>
       </SimpleGrid>
 
-      <Group position="apart" mt="md" mb="xs">
+      <Group position="apart" m="md">
         <Text weight={500}>{game[1]}</Text>
-        <Badge color="indigo" variant="light">
+        <Badge color="dark" variant="light">
           {game[5].toString()} games
         </Badge>
       </Group>
-
-      <Text size="sm" color="dimmed">
-        <Progress
-          radius="xl"
-          size={24}
-          sections={[
-            {
-              value: 100,
-              color: "gray.8",
-              label: `Liquidity: ${ethers.utils.formatEther(game[4])} ETH`,
-              tooltip: "The amount of liquidity in the game.",
-            },
-          ]}
-        />
-      </Text>
 
       <Link
         to={`/games/${game[0].toString()}`}
@@ -676,11 +721,11 @@ export function Item({ game }: { game: any }) {
       >
         <Button
           variant="light"
-          color="grape"
+          color="dark"
           fullWidth
-          mt="md"
-          radius="md"
+          radius={0}
           leftIcon={<IconDice />}
+          mt={10}
         >
           Go to game
         </Button>

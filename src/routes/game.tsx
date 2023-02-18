@@ -79,7 +79,7 @@ export default function Game() {
                   <tr
                     key={i}
                     style={{
-                      backgroundColor: id === id_.toString() ? "#112614" : "",
+                      backgroundColor: id === id_.toString() ? "#131313" : "",
                     }}
                   >
                     <td>{id_.toString()}</td>
@@ -88,14 +88,24 @@ export default function Game() {
                     <td>
                       <Button
                         variant="light"
-                        color={move_.eq(rand_) ? "green" : "red"}
+                        color={
+                          rand_.gt(ethers.BigNumber.from("0"))
+                            ? move_.eq(rand_)
+                              ? "green"
+                              : "red"
+                            : ""
+                        }
                         size="xs"
                         component="a"
-                        href={`https://testnets.opensea.io/assets/goerli/${gameAddress}/${id_}`}
+                        href={`https://testnets.opensea.io/assets/mumbai/${gameAddress}/${id_}`}
                         target="_blank"
                         fullWidth
                       >
-                        {move_.eq(rand_) ? "WON" : "LOSE"}
+                        {rand_.gt(ethers.BigNumber.from("0"))
+                          ? move_.eq(rand_)
+                            ? "WON"
+                            : "LOSE"
+                          : "..."}
                       </Button>
                     </td>
                   </tr>

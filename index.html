@@ -46,9 +46,63 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
     <meta name="theme-color" content="#ffffff" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .box {
+        --border-size: 3px;
+        --border-angle: 0turn;
+        border-radius: 3px;
+        margin: 0 3px;
+        background-image: conic-gradient(
+            from var(--border-angle),
+            #213,
+            #112 50%,
+            #213
+          ),
+          conic-gradient(from var(--border-angle), transparent 20%, #08f, #f03);
+        background-size: calc(100% - (var(--border-size) * 2))
+            calc(100% - (var(--border-size) * 2)),
+          cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        -webkit-animation: bg-spin 3s linear infinite;
+        animation: bg-spin 3s linear infinite;
+      }
+      @-webkit-keyframes bg-spin {
+        to {
+          --border-angle: 1turn;
+        }
+      }
+      @keyframes bg-spin {
+        to {
+          --border-angle: 1turn;
+        }
+      }
+      .box:hover {
+        -webkit-animation-play-state: paused;
+        animation-play-state: paused;
+      }
+
+      @property --border-angle {
+        syntax: "<angle>";
+        inherits: true;
+        initial-value: 0turn;
+      }
+    </style>
     <script type="module" src="./polyfills.ts"></script>
   </head>
-  <body>
+  <body style="background-color: #1a1b1e">
+    <div style="position: fixed; right: -800px; bottom: 0">
+      <img src="/src/images/image.png" />
+    </div>
+    <div style="position: fixed; left: -800px; bottom: 0">
+      <img src="/src/images/image.png" />
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

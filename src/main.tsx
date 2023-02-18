@@ -13,8 +13,6 @@ import Layout from "./routes/layout";
 import Index from "./routes/index";
 import Games from "./routes/games";
 import Game from "./routes/game";
-import History from "./routes/history";
-import Nft from "./routes/nft";
 
 const router = createHashRouter([
   {
@@ -46,7 +44,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <WagmiConfig client={client}>
       <RainbowKitProvider chains={chains} theme={darkTheme()}>
         <MantineProvider
-          theme={{ colorScheme: "dark" }}
+          theme={{
+            colorScheme: "dark",
+            fontFamily: "Chakra Petch, sans-serif",
+            fontFamilyMonospace: "Chakra Petch, monospace",
+            headings: { fontFamily: "Chakra Petch, sans-serif" },
+          }}
           withGlobalStyles
           withNormalizeCSS
         >
