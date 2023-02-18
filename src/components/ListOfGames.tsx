@@ -666,14 +666,14 @@ export function Item({ game }: { game: any }) {
 
   return (
     <Card shadow="sm" p={0} radius="md">
-      <Group position="apart" m="xs">
+      <Group position="apart" h={20}>
         <div style={bal}>
-          <Badge color="gray" variant="light" size="xs">
+          <Badge color="gray.6" variant="light" size="xs">
             Bal: {ethers.utils.formatEther(game[3])} {balance?.symbol}
           </Badge>
         </div>
         <div style={liq}>
-          <Badge color="gray" variant="light" size="xs">
+          <Badge color="gray.6" variant="light" size="xs">
             Liq: {ethers.utils.formatEther(game[4])} {balance?.symbol}
           </Badge>
         </div>
