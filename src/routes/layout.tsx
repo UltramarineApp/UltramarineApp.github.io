@@ -147,7 +147,7 @@ export default function Layout() {
   const navigate = useNavigate();
   const [opened, setOpened] = useState(false);
   const [game, setGame] = useState({
-    name: "Football versus",
+    name: "Football Battle",
     background1: "5d2e1a",
     emoji1: "🏈",
     background2: "1a435d",
