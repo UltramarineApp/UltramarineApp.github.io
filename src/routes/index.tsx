@@ -88,8 +88,8 @@ export default function HeroBullets() {
               <span className={classes.highlight2}>Game Protocol</span>
             </Title>
             <Text color="dimmed" mt="md">
-              Game protocoll for building games based on cryptographically
-              secure randomness.
+              Game protocol for building games based on cryptographically secure
+              randomness.
             </Text>
 
             <List
