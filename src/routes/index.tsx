@@ -64,14 +64,14 @@ const useStyles = createStyles((theme) => ({
       variant: "light",
       color: theme.primaryColor,
     }).background,
-    borderRadius: theme.radius.sm,
+    borderRadius: "20px 20px 20px 0",
     padding: "4px 12px",
   },
 
   highlight2: {
     position: "relative",
     backgroundColor: "#e6770033",
-    borderRadius: theme.radius.sm,
+    borderRadius: "0 20px 20px 20px",
     padding: "4px 12px",
   },
 }));
