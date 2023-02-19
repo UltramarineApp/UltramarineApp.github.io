@@ -212,7 +212,7 @@ export default function Layout() {
       >
         <Container className={classes.inner}>
           <Link to={`/`}>
-            <Image src={logo} style={{ width: "50px" }}></Image>
+            <Image src={logo} style={{ width: "75px" }}></Image>
           </Link>
           <Group spacing={5}>
             <Link to={`/games`}>
@@ -343,7 +343,7 @@ export default function Layout() {
             </Button>
           </Group>
 
-          <ConnectButton />
+          <ConnectButton chainStatus="icon" />
         </Container>
       </Header>
       <Outlet />

@@ -42,7 +42,12 @@ const router = createHashRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <WagmiConfig client={client}>
-      <RainbowKitProvider chains={chains} theme={darkTheme()}>
+      <RainbowKitProvider
+        chains={chains}
+        theme={darkTheme({
+          borderRadius: "medium",
+        })}
+      >
         <MantineProvider
           theme={{
             colorScheme: "dark",
