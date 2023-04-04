@@ -1,22 +1,12 @@
-import {
-  Container,
-  Text,
-  Button,
-  Table,
-  Space,
-  Card,
-  DEFAULT_THEME,
-} from "@mantine/core";
+import { Container, Button, Table, Space, Card } from "@mantine/core";
 import { ethers } from "ethers";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   paginatedIndexesConfig,
   useAccount,
   useBalance,
   useContractInfiniteReads,
   useContractRead,
-  useContractWrite,
-  usePrepareContractWrite,
 } from "wagmi";
 
 import ultramarineABI from "../../abi/ultramarine.json";

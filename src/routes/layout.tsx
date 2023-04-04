@@ -22,10 +22,7 @@ import {
   IconPaint,
   IconRefresh,
   IconPlayCard,
-  IconGoGame,
   IconDeviceGamepad,
-  IconDeviceGamepad2,
-  IconPlayerPause,
   IconPlus,
 } from "@tabler/icons-react";
 
